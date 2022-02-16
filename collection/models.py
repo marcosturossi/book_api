@@ -14,10 +14,19 @@ class Category(models.Model):
         return self.name
 
 
+class Collection(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
+
 class Book(models.Model):
     name = models.CharField(max_length=255)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     author = models.CharField(max_length=255)
-    page_number = models.IntegerField(validators=[MinValueValidator(0)])
+    page_number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50)
@@ -27,12 +36,3 @@ class Book(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class Collection(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.user.username

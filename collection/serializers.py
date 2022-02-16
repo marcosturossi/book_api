@@ -1,17 +1,26 @@
 from rest_framework import serializers
-from .models import Book, Category
+from .models import Book, Category, Collection
 
 
-class BookSerializer(serializers.HyperlinkedModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = "__all__"
-        dept = 2
 
 
-class BookCategorySerializer(serializers.HyperlinkedModelSerializer):
-    book = BookSerializer()
+class CollectionSerializer(serializers.ModelSerializer):
+    book = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
 
+    class Meta:
+        model = Collection
+        fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"

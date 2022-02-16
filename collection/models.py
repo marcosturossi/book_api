@@ -24,10 +24,10 @@ class Collection(models.Model):
 
 class Book(models.Model):
     name = models.CharField(max_length=255)
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    collection = models.ForeignKey(Collection, related_name='book', on_delete=models.CASCADE)
     author = models.CharField(max_length=255)
     page_number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(Category, related_name='book', on_delete=models.CASCADE, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50)
 

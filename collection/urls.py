@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ApiRoot, BookListCreateView, BookRetrieveUpdateDestroyView, CategoryListCreateView, \
-    CategoryRetrieveUpdateDestroyView, CollectionRetrieveView, CollectionCreateView
+    CategoryRetrieveUpdateDestroyView, CollectionRetrieveView
 
 app_name = 'collections'
 
@@ -11,6 +11,5 @@ urlpatterns = [
     path('category-list', CategoryListCreateView.as_view(), name='category_list'),
     path('category-detail/<int:pk>', CategoryRetrieveUpdateDestroyView.as_view(), name='category_detail'),
     path('collection-detail/<int:pk>', CollectionRetrieveView.as_view(), name='collection_detail'),
-    path('collection-add', CollectionCreateView.as_view(), name='collection_add'),
 
 ]

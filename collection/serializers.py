@@ -9,11 +9,7 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
-    book = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='name'
-    )
+    book = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Collection
@@ -21,6 +17,8 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    book = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Category
         fields = "__all__"

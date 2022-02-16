@@ -1,0 +1,10 @@
+*.pyc
+*.pyo
+**/migrations/*
+**.pyc
+**/__pycache__/*
+**/cte/*
+!__init__.py
+db.sqlite3
+.idea
+venv

@@ -40,6 +40,10 @@ python manage.py runserver
 ```
 Deve abrir uma página HTML do DjangoREST
 ```
+6 Documentação 
+```
+A documentação da API está disponível em:  http://127.0.0.1:8000/documentation
+```
 Informações importantes: 
 ```
 Este projeto usa como sistema de autenticação via TOKEN, sendo assim só deve ser utilizado em produção com uma conexão HTTPS.

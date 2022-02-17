@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.utils.text import slugify
 
 
 class Collection(models.Model):
@@ -19,6 +20,10 @@ class Category(models.Model):
     class Meta:
         ordering = ('name',)
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)  # Gerar o slug automaticamente
+        super(Category, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -33,6 +38,10 @@ class Book(models.Model):
 
     class Meta:
         ordering = ('name',)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)  # Gerar o slug automaticamente
+        super(Book, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name

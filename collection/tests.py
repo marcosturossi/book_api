@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.text import slugify
 
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
@@ -30,8 +29,7 @@ class CollectionTeste(TestCase):
         self.category1 = Category.objects.create(name='Financeiro', collection=self.user.collection)
         self.category2 = Category.objects.create(name='Programação', collection=self.user.collection)
         book_data = {'name': 'Python do 0 ao Avançado', 'author': 'Fernando',
-                     'category': Category.objects.get(name='Financeiro'), 'created': timezone.now(),
-                     'slug': slugify('Python do 0 ao Avançado')}
+                     'category': Category.objects.get(name='Financeiro'), 'created': timezone.now(),}
         self.book = Book.objects.create(**book_data)
         self.client_not_authenticated = APIClient()
         self.client_authenticated = APIClient()
@@ -53,6 +51,7 @@ class CollectionTeste(TestCase):
 
     def teste_book_get_method(self):
         """ Verifica a view com método GET na ListCreateAPI do book """
+
         # Cliente não Autenticado
         response = self.client_not_authenticated.get(reverse('collections:book_list'))
         self.assertEqual(response.status_code, 401)
@@ -68,9 +67,9 @@ class CollectionTeste(TestCase):
 
     def teste_book_post_method(self):
         """ Verifica a view com método POST na ListCreateAPI do book """
+
         book_data = {'name': 'Do 0 a 1 milhão', 'collection': Collection.objects.get(user__username='marcos').id,
-                     'author': 'Gustavo', 'category': Category.objects.get(name='Financeiro').id,
-                     'slug': slugify('Do 0 a 1 milhão')}
+                     'author': 'Gustavo', 'category': Category.objects.get(name='Financeiro').id}
         # Cliente não Autenticado
         response = self.client_not_authenticated.post(reverse('collections:book_list'), book_data, format='json')
         self.assertEqual(response.status_code, 401)
@@ -82,6 +81,7 @@ class CollectionTeste(TestCase):
 
     def teste_category_get_method(self):
         """ Verifica se a view com método GET na RetrieveUpdateDestroyAPIView da Category """
+
         # Cliente não Autenticado
         response = self.client_not_authenticated.get(reverse('collections:category_list'))
         self.assertEqual(response.status_code, 401)
@@ -99,8 +99,9 @@ class CollectionTeste(TestCase):
 
     def teste_category_post_method(self):
         """ Verifica se a view com método POST na ListCreateAPI da Category """
+
         # Cliente não Autenticado
-        category_data = {'name': 'AutoAjuda', 'collection': self.user.collection.id, 'slug': slugify('AutoAjuda')}
+        category_data = {'name': 'AutoAjuda', 'collection': self.user.collection.id}
         response = self.client_not_authenticated.post(reverse('collections:category_list'), category_data,
                                                       format='json')
         self.assertEqual(response.status_code, 401)
@@ -112,11 +113,11 @@ class CollectionTeste(TestCase):
 
     def testa_book_put_delete_method(self):
         """ Verifica se a view com método PUT/DELETE na RetrieveUpdateDestroyAPIView da Book """
+
         book = Book.objects.last()
         self.assertEqual(book.name, 'Python do 0 ao Avançado')
         book_data = {'name': 'Do 0 a 1 milhão', 'collection': Collection.objects.get(user__username='marcos').id,
-                     'author': 'Gustavo', 'category': Category.objects.get(name='Financeiro').id,
-                     'slug': slugify('Do 0 a 1 milhão')}
+                     'author': 'Gustavo', 'category': Category.objects.get(name='Financeiro').id}
 
         # PUT METHOD
         # Cliente não autenticado

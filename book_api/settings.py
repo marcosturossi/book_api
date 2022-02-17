@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 3rd Party
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
     # Local
     'collection.apps.CollectionConfig',
@@ -58,9 +59,16 @@ MIDDLEWARE = [
 
 
 REST_FRAMEWORK = {
+    # Autenticação
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-    ]
+        'rest_framework.authentication.TokenAuthentication', ],
+
+    # Paginação
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 30,
+
+    # Filtros
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 ROOT_URLCONF = 'book_api.urls'

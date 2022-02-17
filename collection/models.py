@@ -3,17 +3,6 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255)
-
-    class Meta:
-        ordering = ('name',)
-
-    def __str__(self):
-        return self.name
-
-
 class Collection(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -22,12 +11,23 @@ class Collection(models.Model):
         return self.user.username
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
 class Book(models.Model):
     name = models.CharField(max_length=255)
-    collection = models.ForeignKey(Collection, related_name='book', on_delete=models.CASCADE)
     author = models.CharField(max_length=255)
     page_number = models.IntegerField(validators=[MinValueValidator(0)], default=0)
-    category = models.ForeignKey(Category, related_name='book', on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50)
 

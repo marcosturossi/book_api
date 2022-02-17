@@ -9,15 +9,12 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class CollectionSerializer(serializers.ModelSerializer):
-    book = serializers.StringRelatedField(many=True)
-
     class Meta:
         model = Collection
         fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         fields = "__all__"

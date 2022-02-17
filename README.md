@@ -12,12 +12,7 @@ djangorestframework==3.13.1
 
 1 Instalar Depêndencias (Verificar se está na pasta correta)
 ```
-Windows
 pip install requirements.txt
-```
-```
-Linux
-pip3 install requirements.txt
 ```
 
 2 Sincronize a Base de Dados

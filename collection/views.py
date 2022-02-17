@@ -2,7 +2,7 @@ from rest_framework.reverse import reverse
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -20,7 +20,7 @@ class Documentation(TemplateView):
 class ApiRoot(generics.GenericAPIView):
     name = 'api_root'
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
 
     def get(self, request, *args, **kwargs):
         return Response({'categories': reverse(CategoryListCreateView.name, request=request),
@@ -35,7 +35,7 @@ class BookListCreateView(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     name = 'collections:book_list'
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [DjangoFilterBackend]
 
     def get_queryset(self):
@@ -48,7 +48,7 @@ class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookSerializer
     name = 'collections:book_detail'
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
@@ -61,7 +61,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     name = 'collections:category_list'
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
     filter_backends = [DjangoFilterBackend]
 
     def get_queryset(self):
@@ -74,7 +74,7 @@ class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
     serializer_class = CategorySerializer
     name = 'collections:category_detail'
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
@@ -87,7 +87,7 @@ class CollectionRetrieveView(generics.RetrieveAPIView):
     serializer_class = CollectionSerializer
     name = 'collections:collection_detail'
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])

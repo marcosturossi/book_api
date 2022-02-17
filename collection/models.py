@@ -21,7 +21,7 @@ class Category(models.Model):
         ordering = ('name',)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)  # Gerar o slug automaticamente
+        self.slug = slugify(self.name)  # Gera o slug
         super(Category, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Book(models.Model):
         ordering = ('name',)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)  # Gerar o slug automaticamente
+        self.slug = slugify(self.name)  # Gera o slug
         super(Book, self).save(*args, **kwargs)
 
     def __str__(self):

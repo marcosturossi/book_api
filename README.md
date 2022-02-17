@@ -41,4 +41,4 @@ Informações importantes:
 ```
 Este projeto usa como sistema de autenticação via TOKEN, sendo assim só deve ser utilizado em produção com uma conexão HTTPS.
 Se for colocado em produção lembrar de preencher a secret_key do django com um hash seguro.
-``
+```

@@ -26,8 +26,7 @@ class ApiRoot(generics.GenericAPIView):
         return Response({'categories': reverse(CategoryListCreateView.name, request=request),
                          'books': reverse(BookListCreateView.name, request=request),
                          'collections': reverse(CollectionRetrieveView.name,
-                                                kwargs={'pk': self.request.user.collection.id}, request=request)
-        })
+                                                kwargs={'pk': self.request.user.collection.id}, request=request)})
 
 
 class BookListCreateView(generics.ListCreateAPIView):
@@ -36,7 +35,7 @@ class BookListCreateView(generics.ListCreateAPIView):
     name = 'collections:book_list'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
-    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category', 'author']
 
     def get_queryset(self):
         # Aplica o filtro para exibir apenas os livros do Usuário
@@ -62,7 +61,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
     name = 'collections:category_list'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
-    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
 
     def get_queryset(self):
         # Aplica o filtro para exibir apenas as Categorias do Usuário

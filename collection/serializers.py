@@ -17,7 +17,6 @@ class CollectionSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    book = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Category

@@ -4,8 +4,8 @@ from django.core.validators import MinValueValidator
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=50)
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255)
 
     class Meta:
         ordering = ('name',)

@@ -10,38 +10,35 @@ django-filter==21.1
 djangorestframework==3.13.1
 ```
 
-1 Instalar Depêndencias
+1 Instalar Depêndencias (Verificar se está na pasta correta)
+
 ```
-Verificar se está na pasta correta.
 Windows
 pip install requirements.txt
 ```
-
+```
 Linux
-
 pip3 install requirements.txt
+```
 
 2 Sincronize a Base de Dados
-
+```
 python manage.py makemigrations
-
 python manage.py migrate
-
+```
 
 3 Criar Usuário Adm
-
-
+```
 python manage.py createsuperuser
-
+```
 
 4 Teste a instalação no ambiente de teste
-
-
+```
 python manage.py runserver
-
+```
 
 Informações importantes: 
-
+```
 Este projeto usa como sistema de autenticação via TOKEN, sendo assim só deve ser utilizado em produção com uma conexão HTTPS.
-
 Se for colocado em produção lembrar de preencher a secret_key do django com um hash seguro.
+``

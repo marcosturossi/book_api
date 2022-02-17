@@ -11,7 +11,6 @@ djangorestframework==3.13.1
 ```
 
 1 Instalar Depêndencias (Verificar se está na pasta correta)
-
 ```
 Windows
 pip install requirements.txt
@@ -37,6 +36,10 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+5 No navegador coloque o caminho http://127.0.0.1:8000
+```
+Deve abrir uma página HTML do DjangoREST
+```
 Informações importantes: 
 ```
 Este projeto usa como sistema de autenticação via TOKEN, sendo assim só deve ser utilizado em produção com uma conexão HTTPS.

@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from django.contrib.auth.mixins import UserPassesTestMixin
+from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
@@ -40,19 +40,18 @@ class BookListCreateView(generics.ListCreateAPIView):
         return Book.objects.filter(category__collection__user=self.request.user.id)
 
 
-class BookRetrieveUpdateDestroyView(UserPassesTestMixin, generics.RetrieveUpdateDestroyAPIView):
+class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     name = 'collections:book_detail'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
 
-    def test_func(self):
-        return self.request.user == self.get_object().category.collection.user
-
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
+        if obj.category.collection.user != self.request.user:
+            raise PermissionDenied({'message': "You don't have permission to acess"})
         return obj
 
 
@@ -69,33 +68,31 @@ class CategoryListCreateView(generics.ListCreateAPIView):
         return Category.objects.filter(collection__user=self.request.user.id)
 
 
-class CategoryRetrieveUpdateDestroyView(UserPassesTestMixin, generics.RetrieveUpdateAPIView):
+class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     name = 'collections:category_detail'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
 
-    def test_func(self):
-        return self.request.user == self.get_object().collection.user
-
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
+        if obj.collection.user != self.request.user:
+            raise PermissionDenied({'message': "You don't have permission to acess"})
         return obj
 
 
-class CollectionRetrieveView(UserPassesTestMixin, generics.RetrieveAPIView):
+class CollectionRetrieveView(generics.RetrieveAPIView):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     name = 'collections:collection_detail'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
 
-    def test_func(self):
-        return self.request.user == self.get_object().user
-
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
+        if obj.user != self.request.user:
+            raise PermissionDenied({'message': "You don't have permission to acess"})
         return obj

@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 
@@ -40,12 +40,15 @@ class BookListCreateView(generics.ListCreateAPIView):
         return Book.objects.filter(category__collection__user=self.request.user.id)
 
 
-class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+class BookRetrieveUpdateDestroyView(UserPassesTestMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     name = 'collections:book_detail'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+    def test_func(self):
+        return self.request.user == self.get_object().category.collection.user
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
@@ -66,12 +69,15 @@ class CategoryListCreateView(generics.ListCreateAPIView):
         return Category.objects.filter(collection__user=self.request.user.id)
 
 
-class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
+class CategoryRetrieveUpdateDestroyView(UserPassesTestMixin, generics.RetrieveUpdateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     name = 'collections:category_detail'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+    def test_func(self):
+        return self.request.user == self.get_object().collection.user
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
@@ -79,12 +85,15 @@ class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
         return obj
 
 
-class CollectionRetrieveView(generics.RetrieveAPIView):
+class CollectionRetrieveView(UserPassesTestMixin, generics.RetrieveAPIView):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
     name = 'collections:collection_detail'
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication, SessionAuthentication]
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
 
     def get_object(self):
         obj = get_object_or_404(self.get_queryset(), pk=self.kwargs['pk'])
